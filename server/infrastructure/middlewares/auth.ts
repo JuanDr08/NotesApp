@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import { TokenDecoded } from '../../shared/types';
-import { NextFunction, Request, Response } from 'express';
+import { RequestWithUser, TokenDecoded } from '../../shared/types';
+import { NextFunction, Response } from 'express';
 
 process.loadEnvFile();
 
-export const auth = async (req : Request, res : Response, next : NextFunction) : Promise<void> => {
+export const auth = async (req : RequestWithUser, res : Response, next : NextFunction) : Promise<void> => {
     try {
         const token = req.cookies.token?.replace('Bearer ', '');
         if (!token) {
@@ -21,6 +21,8 @@ export const auth = async (req : Request, res : Response, next : NextFunction) :
             res.status(401).json({status: 401, message: 'Sesión expirada', authenticated: false});
             return
         }
+
+        req.userId = decoded.id;
 
         next();
     } catch  {
