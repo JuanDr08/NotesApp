@@ -9,7 +9,6 @@ import { EmailFormat, InsertionResult, MongoId, NoteHistory, NoteWithoutHistory,
 
 // Base de datos
 import { ConnectToDatabase } from "../database";
-import { ObjectId } from "mongodb";
 
 
 export class UserRepositoryImpl implements UserRepository {
@@ -51,7 +50,6 @@ export class UserRepositoryImpl implements UserRepository {
         const session = ConnectToDatabase.instanceConnect.session
         try {
             session?.startTransaction()
-            note.id = new ObjectId()
             const query = await UserModel.addNoteToUser(userId, note)
             if (!query?.acknowledged) return undefined
             session?.commitTransaction()

@@ -5,6 +5,12 @@ import { UserService } from "../domain/services/userService";
 import { UserServiceImpl } from "./services/userService";
 import { TokenServiceImpl } from "./services/tokenService";
 
+import { NotesService } from "../domain/services/notesService";
+import { NotesController } from "../application/controller/notesController";
+import { NotesInterceptor } from "./httpInterceptors/notesInterceptor";
+
+
+
 export const userInterceptor = async () => {
 
     const userRepository = new UserRepositoryImpl() // Se crea la implementacion del repositorio
@@ -13,5 +19,17 @@ export const userInterceptor = async () => {
     const userService = new UserService(userRepository, userServiceImpl) // Se crea el servicio y se le inyecta el repositorio para que use sus metodos sin conocer implementacion
     const userController = new UserController(userService, tokenServiceImpl) // Se crea el controlador y se le inyectan los servicios del dominio para controlar el caso de uso
     return new UserInterceptor(userController) // Creamos el interceptor y le pasamos la instancia del controlador para que utilice sus metodos segun el endpoint
+
+}
+
+export const notesInterceptor = async () => {
+    
+    const notesRepository = new UserRepositoryImpl()
+    //const notesServiceImpl = new UserServiceImpl()
+    const notesService = new NotesService(notesRepository, 
+    //    notesServiceImpl
+    )
+    const notesController = new NotesController(notesService)
+    return new NotesInterceptor(notesController)
 
 }

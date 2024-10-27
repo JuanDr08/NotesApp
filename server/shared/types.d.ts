@@ -9,7 +9,7 @@ export type InsertionResult = InsertOneResult;
 export type UpdateResponse = UpdateResult<Document>;
 
 export interface RequestWithUser extends Request {
-    userId: string
+    userId: MongoId
 }
 
 export interface TokenDecoded extends JwtPayload  {
@@ -29,7 +29,7 @@ export type NoteWithoutHistory = Omit<Note, 'history'>
 
 export interface User {
     readonly _id: MongoId
-    readonly role: 'admin' | 'standard'
+    readonly role?: 'admin' | 'standard'
     readonly email: EmailFormat
     readonly password: string
     readonly notes?: Array<Note>
