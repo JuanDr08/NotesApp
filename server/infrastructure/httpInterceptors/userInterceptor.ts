@@ -12,7 +12,10 @@ export class UserInterceptor {
     async registerUserInterceptor(req : Request, res : Response) : Promise<void> {
 
         const errors = validationResult(req);
-        if (!errors.isEmpty()) res.status(400).json({ errors: errors.array() });
+        if (!errors.isEmpty()) {
+            res.status(400).json({ errors: errors.array() });
+            return
+        }
 
         const { email, password } = req.body
 
@@ -26,7 +29,10 @@ export class UserInterceptor {
     async loginInterceptor(req : Request, res : Response) : Promise<void> {
 
         const errors = validationResult(req);
-        if (!errors.isEmpty()) res.status(400).json({ errors: errors.array() });
+        if (!errors.isEmpty()) {
+            res.status(400).json({ errors: errors.array() });
+            return
+        }
         const { email, password } = req.body
 
         const query = await this.userController.loginUseCase(email, password)

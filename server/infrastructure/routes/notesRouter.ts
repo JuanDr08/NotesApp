@@ -2,7 +2,7 @@
 import express, { Request, Response } from "express"
 
 // Middlewares
-import { getLimiter, postLimiter } from "../middlewares/rateLimit"
+import { deleteLimiter, getLimiter, postLimiter, putLimiter } from "../middlewares/rateLimit"
 import { auth } from "../middlewares/auth"
 
 // Validators
@@ -33,6 +33,62 @@ router.get('/',
     async (req: Request, res: Response) => {
         const loadNotesInterceptor = await notesInterceptor()
         loadNotesInterceptor.getAllNotesFromUserInterceptor(req, res)
+    }
+
+)
+
+router.get('/search',
+    auth,
+    getLimiter,
+    notesValidator.queryTitleContentSearcherValidator(),
+    async (req: Request, res: Response) => {
+        const loadNotesInterceptor = await notesInterceptor()
+        loadNotesInterceptor.searchNotesInterceptor(req, res)
+    }
+)
+
+router.get('/:id',
+    auth,
+    getLimiter,
+    notesValidator.validateIdFromParam(),
+    async (req: Request, res: Response) => {
+        const loadNotesInterceptor = await notesInterceptor()
+        loadNotesInterceptor.getOneNoteFromUserInterceptor(req, res)
+    }
+
+)
+
+router.put('/:id',
+    auth,
+    express.json(),
+    putLimiter,
+    notesValidator.validateIdFromParam(),
+    notesValidator.validateCorrectFieldsToUpdate(),
+    async (req: Request, res: Response) => {
+        const loadNotesInterceptor = await notesInterceptor()
+        loadNotesInterceptor.updateNoteInterceptor(req, res)
+    }
+
+)
+
+router.delete('/:id',
+    auth,
+    deleteLimiter,
+    notesValidator.validateIdFromParam(),
+    async (req: Request, res: Response) => {
+        const loadNotesInterceptor = await notesInterceptor()
+        loadNotesInterceptor.deleteNoteInterceptor(req, res)
+    }
+
+)
+
+router.get('/:id/history',
+    auth,
+    getLimiter,
+    notesValidator.validateIdFromParam(),
+    async (req: Request, res: Response) => {
+        const loadNotesInterceptor = await notesInterceptor()
+        loadNotesInterceptor.getNoteHistoryInterceptor(req, res)
     }
 
 )

@@ -8,7 +8,7 @@ export interface UserRepository {
     addNoteToUser(userId: MongoId, note: NoteWithoutHistory): Promise<UpdateResponse | undefined>;
     getAllNotesFromUser(userId: MongoId): Promise<Pick<User, 'notes'> | undefined>;
     getOneNoteFromUser(userId: MongoId, noteId: MongoId): Promise<UserNotesHistory | undefined>;
-    updateNoteFromUser(userId: MongoId, noteId: MongoId, fieldToUpdate: NoteHistory, value: string): Promise<UpdateResponse | undefined>;
+    updateNoteFromUser(userId: MongoId, noteId: MongoId, fieldToUpdate: Partial<NoteHistory>, value: string): Promise<UpdateResponse | undefined>;
     addNoteToUserHistory(userId: MongoId, noteId: MongoId ,note: NoteHistory): Promise<UpdateResponse | undefined>;
     deleteNoteFromUser(userId: MongoId, noteId: MongoId): Promise<UpdateResponse | undefined>;
 

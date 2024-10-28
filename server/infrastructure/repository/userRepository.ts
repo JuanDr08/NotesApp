@@ -126,7 +126,7 @@ export class UserRepositoryImpl implements UserRepository {
         return query 
     }
     
-    async getAllNotesFromUser(userId: MongoId): Promise<Pick<User, 'notes'> | undefined> {
+    async getAllNotesFromUser(userId: MongoId): Promise<UserNotesHistory | undefined> {
         const query = await UserModel.getAllNotesFromUser(userId)
         if(!query) return undefined
         return query 

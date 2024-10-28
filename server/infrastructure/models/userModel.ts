@@ -49,8 +49,8 @@ export class UserModel {
     static async updateNoteFromUser(userId: MongoId, noteId: MongoId, fieldToUpdate: Partial<Note>, value: string): Promise<UpdateResponse | undefined> {
         const db = ConnectToDatabase.instanceConnect
         const collection : Collection<User> | undefined = db.db?.collection('usuario')
-        const field = `notes.$.${[fieldToUpdate]}`
-        const result = await collection?.updateOne({_id : userId, "notes.id": noteId.id}, {$set: {[field]: value}})
+        const field = `notes.$.${fieldToUpdate}`
+        const result = await collection?.updateOne({_id : userId, "notes.id": noteId}, {$set: {[field]: value}})
         return result
     }
 
