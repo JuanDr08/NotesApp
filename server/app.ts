@@ -10,7 +10,10 @@ const startApp = async () => {
     const db = new ConnectToDatabase()
     await db.connectOpen()
     const app = express()
-    app.use(cors())
+    app.use(cors({
+        origin: 'http://localhost:5173',
+        credentials: true
+    }))
 
     
     app.use('/', (_req, _res, next) => {
